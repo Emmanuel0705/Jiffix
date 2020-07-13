@@ -1,4 +1,5 @@
 import express from 'express';
+import { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -6,7 +7,7 @@ import hpp from 'hpp';
 import AppError from '../src/utils/appError';
 
 // Start express app
-const app: any = express();
+const app = express();
 
 app.enable('trust proxy');
 
@@ -33,7 +34,7 @@ app.use(
 //  ROUTES
 // app.use('/api/v1/users', userRouter);
 
-app.all('*', (req: { originalUrl: string }, res: any, next: Function) => {
+app.all('*', (req: Request, res: Response, next: NextFunction) => {
     next(new AppError(`Can't find ${req.originalUrl} on this server!`, '404'));
 });
 
