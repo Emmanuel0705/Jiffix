@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import hpp from 'hpp';
 import AppError from '../src/utils/appError';
+import userRoutes from './routes/usersRoutes';
 
 // Start express app
 const app = express();
@@ -32,7 +33,7 @@ app.use(
 );
 
 //  ROUTES
-// app.use('/api/v1/users', userRouter);
+app.use('/api/users', userRoutes);
 
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
     next(new AppError(`Can't find ${req.originalUrl} on this server!`, '404'));
