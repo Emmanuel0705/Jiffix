@@ -31,6 +31,8 @@ app.use(
         whitelist: [],
     })
 );
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //  ROUTES
 app.use('/api/users', userRoutes);
