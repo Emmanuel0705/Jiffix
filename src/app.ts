@@ -4,7 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import hpp from 'hpp';
-import AppError from '../src/utils/appError';
+import AppError from './utils/appError';
 import userRoutes from './routes/usersRoutes';
 
 // Start express app
