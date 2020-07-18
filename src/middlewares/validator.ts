@@ -1,63 +1,48 @@
-import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import * as userModel from '../models/userModel';
-import { status, message } from '../utils/constant';
+import { message } from '../utils/constant';
+import AppError from '../utils/appError';
+import catchAsync from '../utils/catchAsync';
 
-export const validateRegisterInput = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-): Promise<any> => {
+export const validateRegisterInput = catchAsync(async (req, res, next) => {
     const { name, email, phone, password } = req.body;
-
     if (name && email && phone && password) {
         if (await userModel.getUserByEmail(email))
-            return res.json({
-                status: status.error,
-                message: message.usedEmail,
-            });
+            throw new AppError(message.usedEmail, 409);
 
         if (await userModel.getUserByPhone(phone))
-            return res.json({
-                status: status.error,
-                message: message.usedPhone,
-            });
+            throw new AppError(message.usedPhone, 409);
 
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
         req.body.password = hash;
         return next();
     }
+    throw new AppError(message.invalidData, 400);
+});
 
-    res.json({ status: status.error, message: message.invalidData });
-};
-export const validateLoginInput = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-): Promise<any> => {
+export const validateLoginInput = catchAsync(async (req, res, next) => {
     const { email, phone, password } = req.body;
     if (password && (email || phone)) {
         let userDetials;
         if (email) userDetials = await userModel.getUserByEmail(email);
         if (phone) userDetials = await userModel.getUserByPhone(phone);
 
-        if (!userDetials)
-            return res.json({
-                status: status.error,
-                message: message.invalidLogin,
-            });
+        if (!userDetials) throw new AppError(message.invalidLogin, 404);
 
         if (!(await bcrypt.compare(password, userDetials.password)))
-            return res.json({
-                status: status.error,
-                message: message.invalidLogin,
-            });
+            throw new AppError(message.invalidLogin, 404);
 
         req.body.isValidated = true;
         req.body.userId = userDetials.id;
         return next();
     }
+    throw new AppError(message.invalidData, 400);
+});
 
-    res.json({ status: status.error, message: message.invalidData });
-};
+export const validatePhone = catchAsync(async (req, res, next) => {
+    const { phone } = req.body;
+    if (!phone.trim() || isNaN(phone * 1) || phone.length !== 11)
+        throw new AppError(message.invalidData, 400);
+    next();
+});

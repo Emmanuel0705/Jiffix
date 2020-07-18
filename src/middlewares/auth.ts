@@ -1,14 +1,11 @@
-import AppError from '../utils/appError';
 import { promisify } from 'util';
 import jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
-
+import AppError from '../utils/appError';
 import * as userModel from '../models/userModel';
-export const protectedRoute = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-): Promise<any> => {
+import { message } from '../utils/constant';
+import catchAsync from '../utils/catchAsync';
+
+export const protectedRoute = catchAsync(async (req, res, next) => {
     let token;
     if (
         req.headers.authorization &&
@@ -18,15 +15,7 @@ export const protectedRoute = async (
     }
 
     if (!token) {
-        return next(
-            new AppError(
-                'You are not logged in! Please log in to get access.',
-                '401'
-            )
-        );
-    }
-    interface Dtype {
-        id: string;
+        throw new AppError(message.notLoggedIn, 404);
     }
 
     // 2) Verification token
@@ -35,16 +24,15 @@ export const protectedRoute = async (
         process.env.JWT_SECRET || 'eue33'
     );
 
+    if (!decoded.id) {
+        throw new AppError(message.userNotExist, 404);
+    }
+
     // 3) Check if user still exists
     const currentUser = await userModel.findUserById(decoded.id);
     if (!currentUser) {
-        return next(
-            new AppError(
-                'The user belonging to this token does no longer exist.',
-                '401'
-            )
-        );
+        throw new AppError(message.userNotExist, 404);
     }
     req.body.id = currentUser.id;
     next();
-};
+});
