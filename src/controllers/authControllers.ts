@@ -5,6 +5,8 @@ import catchAsync from '../utils/catchAsync';
 import { status, message } from '../utils/constant';
 import AppError from '../utils/appError';
 import Email from './email';
+import verErrorMSG from '../view/Message/verificationError';
+import verifiedMSG from '../view/Message/verified';
 
 const signToken = (id: number | string): string => {
     return jwt.sign({ id }, process.env.JWT_SECRET || '12wedr', {
@@ -83,12 +85,7 @@ export const resetPassword = catchAsync(async (req, res) => {
     return res.json({ status: status.success, message: message.passwordreset });
 });
 export const verifyEmail = catchAsync(async (req, res) => {
-    if (req.body.status === status.success) {
-        return res.sendFile(
-            path.join(__dirname, '../view/Message/verified.html')
-        );
-    }
-    return res.sendFile(
-        path.join(__dirname, '../view/Message/verificationError.html')
-    );
+    if (req.body.status === status.success) return res.send(verifiedMSG);
+
+    return res.send(verErrorMSG);
 });
