@@ -1,11 +1,11 @@
 import express from 'express';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import hpp from 'hpp';
-import AppError from './utils/appError';
 import userRoutes from './routes/usersRoutes';
+import { status } from './utils/constant';
 
 // Start express app
 const app = express();
@@ -37,8 +37,13 @@ app.use(express.urlencoded({ extended: true }));
 //  ROUTES
 app.use('/api/users', userRoutes);
 
-app.all('*', (req: Request, res: Response, next: NextFunction) => {
-    next(new AppError(`Can't find ${req.originalUrl} on this server!`, '404'));
+app.all('*', (req: Request, res: Response) => {
+    return res.status(404).json({
+        status: status.error,
+        message: `Can't find ${req.originalUrl} on this server!`,
+    });
+
+    // new AppError(`Can't find ${req.originalUrl} on this server!`, 404);
 });
 
 export default app;

@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "tsc && node build/server.js",
+        "start": "node build/server.js",
         "dev": "nodemon ./src/server.ts",
         "build": "rimraf build && tsc -p ."
     },
@@ -38,6 +38,8 @@
         "@types/hpp": "^0.2.1",
         "@types/jsonwebtoken": "^8.5.0",
         "@types/morgan": "^1.9.1",
+        "@types/nodemailer": "^6.4.0",
+        "axios": "^0.19.2",
         "bcryptjs": "^2.4.3",
         "cors": "^2.8.5",
         "express": "^4.17.1",
@@ -46,6 +48,7 @@
         "jsonwebtoken": "^8.5.1",
         "knex": "^0.21.2",
         "morgan": "^1.10.0",
-        "mysql": "^2.18.1"
+        "mysql": "^2.18.1",
+        "nodemailer": "^6.4.10"
     }
 }
