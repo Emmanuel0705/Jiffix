@@ -15,6 +15,6 @@ export const verifyNumber = catchAsync(async (req, res) => {
     const smsRes = await axios.get(
         `https://smartsmssolutions.com/api/json.php?message=${message}&to=${to}&sender=${sender}&type=${type}&routing=${routing}&token=${token}`
     );
-    console.log(smsRes.data);
+
     res.send(smsRes.data);
 });
