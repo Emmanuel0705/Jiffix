@@ -42,7 +42,11 @@ export const login = catchAsync(async (req, res, next) => {
 
         if (!(await bcrypt.compare(password, userDetials.password)))
             throw new AppError(message.invalidLogin, 404);
-
+        req.body.userData = {
+            name: userDetials.name,
+            email: userDetials.email,
+            phone: userDetials.phone,
+        };
         req.body.isValidated = true;
         req.body.userId = userDetials.id;
         return next();
