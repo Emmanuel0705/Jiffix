@@ -44,7 +44,7 @@ export const registerUser = catchAsync(async (req, res) => {
         };
         await new Email(UserData, url).emailVerification();
         const token = signToken(userId);
-        return res.json({ status: status.success, token });
+        return res.json({ status: status.success, token, name, email, phone });
     }
     throw new AppError(message.errorOccurred, 500);
 });
