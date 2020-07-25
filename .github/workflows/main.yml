@@ -13,15 +13,5 @@ jobs:
             - uses: akhileshns/heroku-deploy@v3.3.6
               with:
                   heroku_api_key: ${{secrets.HEROKU_SECRET}}
-                  heroku_app_name: 'jiffix' 
+                  heroku_app_name: 'jiffix'
                   heroku_email: 'emmanuelloluwatobi@gmail.com'
-on
-   pull_request:
-      branches:
-        - master
-
-jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-          - run: jest
