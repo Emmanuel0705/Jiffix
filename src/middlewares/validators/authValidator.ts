@@ -5,12 +5,13 @@ import AppError from '../../utils/appError';
 import catchAsync from '../../utils/catchAsync';
 import createToken from '../../helper/createToken';
 import hashToken from '../../helper/hashToken';
+import trimInput from '../../utils/trimInput';
 
 export const register = catchAsync(async (req, res, next) => {
     const { name, email, phone, password } = req.body;
     //validate req.body
-    if (!name.trim() && !email.trim() && !phone.trim() && !password.trim())
-        throw new AppError(message.invalidData, 400);
+    const valid = trimInput([name, email, phone, password]);
+    if (!valid) return new AppError(message.invalidData, 400);
     //check if email already exist
     if (await userModel.getUserByEmail(email))
         throw new AppError(message.usedEmail, 409);
