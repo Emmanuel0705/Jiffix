@@ -25,3 +25,8 @@ export const getCarModelYear = async (
         .where({ car_manufacturer_id, car_model_id });
     return manufacturer;
 };
+
+export const insertCar = async (data: any[]): Promise<any> => {
+    const user = await db.insert(data).into('user_cars');
+    return user[0];
+};

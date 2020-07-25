@@ -15,4 +15,5 @@ export const message = {
     emailNotExist: "user with this email address does'nt not found",
     mailSent: 'reset password mail has been sent to email address ',
     passwordreset: 'password has been reset successfully',
+    carAdded: 'car addedd successfully',
 };
