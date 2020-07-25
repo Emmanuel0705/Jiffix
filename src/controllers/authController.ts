@@ -42,7 +42,7 @@ export const registerUser = catchAsync(async (req, res) => {
             email: req.body.email,
             name: req.body.name.split(' ')[0],
         };
-        await new Email(UserData, url).emailVerification();
+        // await new Email(UserData, url).emailVerification();
         const token = signToken(userId);
         return res.json({ status: status.success, token, name, email, phone });
     }
