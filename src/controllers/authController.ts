@@ -50,10 +50,10 @@ export const registerUser = catchAsync(async (req, res) => {
 });
 
 export const LoginUser = catchAsync(async (req, res) => {
-    const { isValidated, userId } = req.body;
+    const { isValidated, userId, userData } = req.body;
     if (isValidated && userId) {
         const token = signToken(userId);
-        return res.json({ status: status.success, token });
+        return res.json({ status: status.success, token, ...userData });
     }
     throw new AppError(message.errorOccurred, 500);
 });
