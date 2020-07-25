@@ -15,7 +15,7 @@ export const addCar = catchAsync(async (req, res, next) => {
         car_id,
         year,
     ]);
-    if (!valid) return new AppError(message.invalidData, 400);
+    if (!valid) throw new AppError(message.invalidData, 400);
 
     //create slug
     const randomString = crypto.randomBytes(10).toString('base64').slice(0, 10);

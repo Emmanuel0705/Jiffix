@@ -11,7 +11,7 @@ export const register = catchAsync(async (req, res, next) => {
     const { name, email, phone, password } = req.body;
     //validate req.body
     const valid = trimInput([name, email, phone, password]);
-    if (!valid) return new AppError(message.invalidData, 400);
+    if (!valid) throw new AppError(message.invalidData, 400);
     //check if email already exist
     if (await userModel.getUserByEmail(email))
         throw new AppError(message.usedEmail, 409);

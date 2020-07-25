@@ -35,5 +35,5 @@ export const addCar = catchAsync(async (req, res) => {
     ]);
     if (inserted)
         return res.json({ status: status.success, message: message.carAdded });
-    return new AppError(message.errorOccurred, 501);
+    throw new AppError(message.errorOccurred, 501);
 });
