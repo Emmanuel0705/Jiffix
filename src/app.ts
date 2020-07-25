@@ -4,7 +4,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import hpp from 'hpp';
-import userRoutes from './routes/usersRoutes';
+import userRoutes from './routes/userRoutes';
+import carRoutes from './routes/carRoutes';
 import { status } from './utils/constant';
 
 // Start express app
@@ -36,6 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //  ROUTES
 app.use('/api/users', userRoutes);
+app.use('/api/cars', carRoutes);
 
 app.all('*', (req: Request, res: Response) => {
     return res.status(404).json({
